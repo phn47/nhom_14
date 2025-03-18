@@ -24,7 +24,7 @@ import vn.fs.repository.ProductRepository;
 import vn.fs.service.ShoppingCartService;
 
 /**
- * @author KnowSphere
+ * @author KnowSpheres
  *
  */
 @Service
