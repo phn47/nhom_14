@@ -28,6 +28,14 @@ public class ReportController {
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
 
+	// Admin home page
+	@GetMapping(value = "/admin/home")
+	public String home(Model model, Principal principal) {
+		User user = userRepository.findByEmail(principal.getName());
+		model.addAttribute("user", user);
+		return "admin/index";
+	}
+
 	// Statistics by product sold
 	@GetMapping(value = "/admin/reports")
 	public String report(Model model, Principal principal) throws SQLException {

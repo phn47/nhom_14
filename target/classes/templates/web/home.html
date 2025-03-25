@@ -103,49 +103,90 @@
 			box-sizing: border-box;
 		}
 
-		.product-card {
-			position: relative;
-			z-index: 5;
-			/* Đặt thấp hơn section-heading */
-			border: 1px solid #e5e5e5;
+		body {
+			font-family: 'Arial', sans-serif;
+			line-height: 1.6;
+			color: #333;
+		}
+
+		/* Container chính */
+		.product-details-container {
+			max-width: 800px;
+			margin: 20px auto;
+			padding: 20px;
+			background-color: #fff;
 			border-radius: 8px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		/* Mô tả sản phẩm */
+		.details-desc {
+			font-size: 16px;
+			color: #555;
+			margin-bottom: 20px;
+			text-align: justify;
+		}
+
+		/* Nhóm danh sách */
+		.details-list-group {
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		/* Tiêu đề */
+		.details-list-title {
+			font-size: 18px;
+			font-weight: 600;
+			color: #2c3e50;
+		}
+
+		/* Danh sách thẻ */
+		.details-tag-list {
+			list-style: none;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+		}
+
+		.details-tag-list li {
+			display: inline-block;
+		}
+
+		.details-tag-list a {
+			text-decoration: none;
+			font-size: 14px;
+			color: #2980b9;
+			background-color: #ecf0f1;
+			padding: 6px 12px;
+			border-radius: 20px;
+			transition: all 0.3s ease;
+		}
+
+		.details-tag-list a:hover {
+			background-color: #dc3545 !important;
+			color: #fff !important;
+		}
+
+		/* Card sản phẩm */
+		.product-card {
+			border: 1px solid #e5e5e5;
+			border-radius: 5px;
 			overflow: hidden;
-			transition: transform 0.3s ease, box-shadow 0.3s ease;
-			background: #fff;
+			transition: all 0.3s ease;
 			height: 100%;
 			display: flex;
 			flex-direction: column;
-			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+			position: relative;
+			background-color: #fff;
 		}
 
 		.product-card:hover {
-			transform: translateY(-3px);
-			/* Giảm mức di chuyển */
 			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 		}
 
 		.product-media {
 			position: relative;
-			height: 200px;
-			overflow: hidden;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: #f5f5f5;
-			/* Nền xám nhạt giống Fahasa */
-		}
-
-		.product-media img {
-			width: 100%;
-			height: 100%;
-			object-fit: contain;
-			/* Giữ nguyên tỷ lệ ảnh như Fahasa */
-			transition: transform 0.4s ease;
-		}
-
-		.product-media:hover img {
-			transform: scale(1.05);
-			/* Zoom nhẹ giống Fahasa */
 		}
 
 		.product-label {
@@ -153,28 +194,6 @@
 			top: 10px;
 			left: 10px;
 			z-index: 2;
-			display: flex;
-			gap: 5px;
-		}
-
-		.product-label .label-text {
-			padding: 3px 8px;
-			border-radius: 3px;
-			font-size: 10px;
-			font-weight: 700;
-			color: #fff;
-			text-transform: uppercase;
-			letter-spacing: 0.5px;
-		}
-
-		.product-label .new {
-			background-color: #e21e2a;
-			/* Đỏ đặc trưng của Fahasa */
-		}
-
-		.product-label .sale {
-			background-color: #ff9800;
-			/* Cam để làm nổi bật giảm giá */
 		}
 
 		.product-wish {
@@ -184,242 +203,494 @@
 			z-index: 2;
 			background: none;
 			border: none;
-			color: #ccc;
-			/* Xám nhạt mặc định */
-			font-size: 18px;
+			padding: 0;
 			cursor: pointer;
-			transition: color 0.3s ease;
 		}
 
-		.product-wish:hover {
-			color: #e21e2a;
-			/* Đỏ khi hover */
+		.product-image {
+			display: block;
 		}
 
-		.product-widget {
+		.product-image img {
+			width: 100%;
+			height: 200px;
+			object-fit: cover;
+			transition: transform 0.3s ease;
+		}
+
+		.product-card:hover .product-image img {
+			transform: scale(1.1);
+		}
+
+		.label-text {
+			display: inline-block;
+			padding: 3px 8px;
+			border-radius: 3px;
+			font-size: 12px;
+			color: white;
+			margin-bottom: 5px;
+		}
+
+		.label-text.new,
+		.label-text.feat {
+			background-color: #00b853;
+		}
+
+		.label-text.sale {
+			background-color: #ff4d4d;
+		}
+
+		.discount-label {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			background: #ff4d4d;
+			color: white;
+			padding: 2px 6px;
+			border-radius: 3px;
+			font-size: 12px;
+		}
+
+		/* Nút hành động */
+		.action-bar {
 			position: absolute;
 			bottom: 10px;
-			right: 10px;
-			z-index: 2;
+			left: 0;
+			right: 0;
 			display: flex;
-			gap: 6px;
+			justify-content: center;
+			gap: 10px;
+			opacity: 0;
+			transition: all 0.3s ease;
+			transform: translateY(10px);
 		}
 
-		.product-widget a {
-			color: #888;
-			font-size: 15px;
-			transition: color 0.3s ease;
+		.product-card:hover .action-bar {
+			opacity: 1;
+			transform: translateY(0);
 		}
 
-		.product-widget a:hover {
-			color: #e21e2a;
-			/* Đỏ khi hover */
-		}
-
-		.product-content {
-			padding: 12px;
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-		}
-
-		.product-rating {
-			color: #ff9800;
-			/* Cam giống Fahasa */
-			margin-bottom: 6px;
-		}
-
-		.product-rating .icofont-star {
-			font-size: 12px;
-		}
-
-		.product-name {
-			font-size: 14px;
-			font-weight: 600;
-			margin-bottom: 8px;
-			overflow: hidden;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			color: #333;
-		}
-
-		.product-name a {
-			text-decoration: none;
-			color: inherit;
-			transition: color 0.3s ease;
-		}
-
-		.product-name a:hover {
-			color: #e21e2a;
-			/* Đỏ khi hover */
-		}
-
-		.product-price {
-			font-size: 16px;
-			font-weight: 700;
-			color: #e21e2a;
-			/* Giá chính màu đỏ */
-			margin-bottom: 10px;
-		}
-
-		.product-price del {
-			color: #888;
-			font-size: 12px;
-			margin-right: 5px;
-		}
-
-		.product-price span {
-			color: #e21e2a;
-			/* Giá giảm giữ màu đỏ */
-		}
-
-		.product-add1 {
+		.action-btn {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background-color: #dc3545;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			padding: 8px 14px;
-			background-color: #e21e2a;
-			/* Đỏ Fahasa */
-			color: #fff;
-			border-radius: 4px;
-			font-size: 13px;
-			font-weight: 600;
-			text-decoration: none;
-			transition: background-color 0.3s ease;
-		}
-
-		.product-add1:hover {
-			background-color: #c21822;
-			/* Đỏ đậm hơn khi hover */
-			color: #fff;
-		}
-
-		.product-add1 i {
-			margin-right: 5px;
-		}
-
-		/* Section Styling */
-		.recent-part {
-			padding: 50px 0;
-			background: #fff;
-			/* Nền trắng giống Fahasa */
-		}
-
-		.section-heading h2 {
-			font-size: 24px;
-			font-weight: 700;
-			color: #e21e2a;
-			z-index: 10;
-			/* Đỏ cho tiêu đề */
-			text-align: left;
-			/* Căn trái giống Fahasa */
-			margin-bottom: 30px;
-			position: relative;
-			padding-bottom: 8px;
-		}
-
-		.section-heading h2::after {
-			content: '';
-			width: 50px;
-			height: 3px;
-			background: #e21e2a;
-			position: absolute;
-			bottom: 0;
-			left: 0;
-		}
-
-		.section-btn-25 {
-			text-align: center;
-			margin-top: 20px;
-		}
-
-		.section-btn-25 .btn-outline {
-			padding: 10px 20px;
-			border: 1px solid #e21e2a;
-			color: #e21e2a;
-			font-weight: 600;
-			border-radius: 4px;
+			color: white;
+			font-size: 16px;
 			text-decoration: none;
 			transition: all 0.3s ease;
 		}
 
-		.section-btn-25 .btn-outline:hover {
-			background: #e21e2a;
-			color: #fff;
+		.action-btn:hover {
+			background-color: #c82333 !important;
+			color: white !important;
 		}
 
-		.section-btn-25 .btn-outline i {
+		.heart-btn,
+		.play-btn,
+		.view-btn {
+			background-color: #dc3545;
+		}
+
+		.heart-btn.active,
+		.heart-btn:hover,
+		.play-btn:hover,
+		.view-btn:hover {
+			background-color: #c82333 !important;
+		}
+
+		.product-content {
+			padding: 15px;
+			flex-grow: 1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.product-rating {
+			margin-bottom: 10px;
+			color: #ffc107 !important;
+			font-size: 14px;
+		}
+
+		.product-name {
+			margin: 0 0 10px;
+			font-size: 14px;
+			font-weight: 500;
+			line-height: 1.4;
+			height: 40px;
+			overflow: hidden;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+		}
+
+		.product-name a {
+			color: #333;
+			text-decoration: none;
+		}
+
+		.product-price {
+			margin-bottom: 5px;
+		}
+
+		.product-price del {
+			color: #999;
+			font-size: 13px;
 			margin-right: 5px;
+		}
+
+		.product-price span {
+			color: #ff4d4d;
+			font-weight: 600;
+			font-size: 15px;
+		}
+
+		.add-cart-btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 5px;
+			background-color: #dc3545 !important;
+			color: white !important;
+			padding: 8px 15px;
+			border-radius: 3px;
+			text-decoration: none;
+			font-size: 14px;
+			font-weight: 500;
+			margin-top: auto;
+			transition: all 0.3s ease !important;
+		}
+
+		.add-cart-btn:hover {
+			background-color: #c82333 !important;
+			color: white !important;
+			border-color: #c82333 !important;
+		}
+
+		.add-cart-btn i {
+			color: white !important;
+		}
+
+		.add-cart-btn:hover i {
+			color: white !important;
+		}
+
+		/* Nút xem thêm */
+		.view-more-btn {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		.btn-outline {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			padding: 10px 25px;
+			border: 1px solid #dc3545;
+			color: #dc3545;
+			border-radius: 3px;
+			font-weight: 500;
+			text-decoration: none;
+			transition: all 0.3s ease;
+		}
+
+		.btn-outline:hover {
+			background-color: #dc3545 !important;
+			color: white !important;
+		}
+
+		/* Khung trắng */
+		.product-details-frame {
+			background-color: #fff;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+			padding: 20px;
+			margin-bottom: 30px;
+		}
+
+		.section-heading {
+			margin-bottom: 0;
+			border-bottom: none;
+			padding-bottom: 0;
+			position: relative;
+		}
+
+		.section-heading h2 {
+			font-size: 22px;
+			font-weight: 600;
+			color: #333;
+			position: relative;
+			padding-bottom: 15px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-bottom: 0;
+			border-bottom: 2px solid #dc3545;
+		}
+
+		.section-heading h2 i {
+			color: #dc3545;
+			font-size: 24px;
+			background-color: #f8f9fa;
+			width: 40px;
+			height: 40px;
+			border-radius: 8px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.section-heading h2:after {
+			display: none;
+		}
+
+		.brand-content {
+			padding: 20px 0 10px;
+			border-top: 1px solid #e5e5e5;
+			margin-top: -2px;
+		}
+
+		/* Responsive */
+		@media (max-width: 1199px) {
+			.product-slide {
+				flex: 0 0 calc(25% - 15px);
+				max-width: calc(25% - 15px);
+			}
+		}
+
+		@media (max-width: 991px) {
+			.product-slide {
+				flex: 0 0 calc(33.333% - 14px);
+				max-width: calc(33.333% - 14px);
+			}
+		}
+
+		@media (max-width: 767px) {
+			.product-slide {
+				flex: 0 0 calc(50% - 10px);
+				max-width: calc(50% - 10px);
+			}
+
+			.category-tabs {
+				flex-wrap: wrap;
+			}
+		}
+
+		@media (max-width: 575px) {
+			.product-slide {
+				flex: 0 0 100%;
+				max-width: 100%;
+			}
+		}
+
+		/* Màu sao đánh giá */
+		.product-rating i.fas.fa-star,
+		.product-rating i.fas.fa-star-half-alt,
+		.details-rating i.active,
+		.details-rating i.icofont-star {
+			color: #ffc107 !important;
+		}
+
+		/* Màu trái tim yêu thích */
+		.product-wish i.fas.fa-heart {
+			color: #999999 !important;
+			transition: color 0.3s ease;
+		}
+
+		.product-wish a:hover i.fas.fa-heart {
+			color: #dc3545 !important;
+		}
+
+		.product-wish a i.fas.fa-heart[style*="color: #dc3545"] {
+			color: #dc3545 !important;
+		}
+
+		/* Điều chỉnh banner */
+		.single-banner {
+			padding: 35px 0 !important;
+			margin-bottom: 10px !important;
+		}
+
+		.single-banner h2 {
+			font-size: 32px !important;
+			margin-bottom: 0 !important;
+			font-weight: 700 !important;
+			text-transform: uppercase !important;
+			font-family: inherit !important;
+		}
+
+		/* Ẩn breadcrumb */
+		.single-banner .breadcrumb {
+			display: none !important;
+		}
+
+		/* Điều chỉnh khoảng cách */
+		.inner-section {
+			padding-top: 20px !important;
+			padding-bottom: 20px !important;
+		}
+
+		.inner-section+.inner-section {
+			margin-top: 20px !important;
+		}
+
+		.details-gallery {
+			margin-bottom: 15px !important;
+		}
+
+		.details-content {
+			padding-top: 0 !important;
+		}
+
+		/* Điều chỉnh countdown-off */
+		.countdown-off {
+			position: absolute;
+			top: 20px;
+			left: 20px;
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			background: #dc3545;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			text-align: center;
+		}
+
+		.countdown-off span {
+			display: block;
+			color: #ffffff;
+			line-height: 1.2;
+		}
+
+		.countdown-off span:first-child {
+			font-size: 32px;
+			font-weight: bold;
+		}
+
+		.countdown-off span:last-child {
+			font-size: 18px;
+			text-transform: uppercase;
 		}
 	</style>
 	<section class="section recent-part">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="section-heading">
-						<h2>SẢN PHẨM BÁN CHẠY</h2>
+					<div class="product-details-frame">
+						<div class="section-heading">
+							<h2><i class="fas fa-fire"></i> SẢN PHẨM BÁN CHẠY</h2>
+						</div>
+						<div class="brand-content">
+							<div class="row">
+								<div class="col">
+									<ul class="new-slider slider-arrow">
+										<li th:each="item : ${bestSaleProduct20}">
+											<div class="product-card">
+												<div class="product-media">
+													<div class="product-label">
+														<label class="label-text new">Bán Chạy</label>
+														<label class="label-text sale"
+															th:text="'-' + ${item.discount} + '%'"></label>
+													</div>
+													<button class="product-wish wish">
+														<th:block th:if="${user.email != null}">
+															<a th:if="${item.favorite} == false" title="Yêu thích"
+																th:href="@{/doFavorite(id=${item.productId})}">
+																<i class="fas fa-heart"></i>
+															</a>
+															<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+																th:href="@{/doUnFavorite(id=${item.productId})}">
+																<i class="fas fa-heart" style="color: #dc3545;"></i>
+															</a>
+														</th:block>
+														<th:block th:if="${user.email == null}">
+															<a title="Hãy đăng nhập" th:href="@{/login}">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+													</button>
+													<a class="product-image"
+														th:href="@{/productDetail(id=${item.productId})}">
+														<img th:src="@{'/loadImage?imageName='+${item.productImage}}"
+															alt="product" />
+													</a>
+													<div class="action-bar">
+														<th:block th:if="${user.email != null}">
+															<a th:if="${item.favorite} == false" title="Yêu thích"
+																th:href="@{/doFavorite(id=${item.productId})}"
+																class="action-btn heart-btn">
+																<i class="fas fa-heart"></i>
+															</a>
+															<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+																th:href="@{/doUnFavorite(id=${item.productId})}"
+																class="action-btn heart-btn active">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+														<th:block th:if="${user.email == null}">
+															<a title="Hãy đăng nhập" th:href="@{/login}"
+																class="action-btn heart-btn">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+														<a title="Video về sản phẩm"
+															href="https://youtu.be/bp7JBr8D_q4?si=mhZUqMi1d1XRov7I"
+															class="action-btn play-btn venobox" data-autoplay="true"
+															data-vbtype="video">
+															<i class="fas fa-play"></i>
+														</a>
+														<a title="Chi tiết sản phẩm"
+															th:href="@{/productDetail(id=${item.productId})}"
+															class="action-btn view-btn">
+															<i class="fas fa-eye"></i>
+														</a>
+													</div>
+												</div>
+												<div class="product-content">
+													<div class="product-rating">
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star-half-alt"></i>
+													</div>
+													<h6 class="product-name">
+														<a
+															th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
+													</h6>
+													<div class="product-price">
+														<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0,
+															'DEFAULT')}+'
+															đ']]</del>
+														<span>[[${#numbers.formatDecimal(item.price - (item.price *
+															item.discount/100),
+															1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]</span>
+													</div>
+													<a class="add-cart-btn"
+														th:href="@{/addToCart(productId=${item.productId})}">
+														<i class="fas fa-shopping-basket"></i>
+														<span>Thêm Giỏ Hàng</span>
+													</a>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col">
-					<ul class="new-slider slider-arrow">
-						<li th:each="item : ${bestSaleProduct20}">
-							<div class="product-card">
-								<div class="product-media">
-									<div class="product-label">
-										<label class="label-text new">Bán Chạy</label>
-										<label class="label-text sale" th:text="'-' + ${item.discount} + '%'"></label>
-									</div>
-									<button class="product-wish wish">
-										<i class="fas fa-heart"></i>
-									</button>
-									<a class="product-image" th:href="@{/productDetail(id=${item.productId})}">
-										<img th:src="@{'/loadImage?imageName='+${item.productImage}}" alt="product" />
-									</a>
-									<div class="product-widget">
-										<a title="Video sản phẩm" href="#" class="venobox fas fa-play"
-											data-autoplay="true" data-vbtype="video"></a>
-										<a title="Chi tiết sản phẩm" th:href="@{/productDetail(id=${item.productId})}"
-											class="fas fa-eye"></a>
-									</div>
-								</div>
-								<div class="product-content">
-									<div class="product-rating">
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="icofont-star"></i>
-									</div>
-									<h6 class="product-name">
-										<a th:href="@{/productDetail(id=${item.productId})}"
-											th:text="${item.productName}"></a>
-									</h6>
-									<h6 class="product-price">
-										<del
-											th:text="${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ'"></del>
-										<span
-											th:text="${#numbers.formatDecimal(item.price - (item.price * item.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ'"></span>
-									</h6>
-									<a class="product-add1" title="Thêm giỏ hàng"
-										th:href="@{/addToCart(productId=${item.productId})}">
-										<i class="fas fa-shopping-basket"></i>
-										<span>Thêm vào giỏ</span>
-									</a>
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="row">
 				<div class="col-lg-12">
-					<div class="section-btn-25">
+					<div class="view-more-btn">
 						<a th:href="@{/products}" class="btn btn-outline">
-							<i class="fas fa-eye"></i>
-							<span>Xem thêm</span>
+							<span>Xem Thêm</span>
 						</a>
 					</div>
 				</div>
@@ -443,71 +714,117 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="section-heading">
-						<h2>TỦ SÁCH NỔI BẬT</h2>
+					<div class="product-details-frame">
+						<div class="section-heading">
+							<h2><i class="fas fa-book"></i> TỦ SÁCH NỔI BẬT</h2>
+						</div>
+						<div class="brand-content">
+							<div class="row">
+								<div class="col">
+									<ul class="new-slider slider-arrow">
+										<li th:each="item : ${bestSaleProduct20}">
+											<div class="product-card">
+												<div class="product-media">
+													<div class="product-label">
+														<label class="label-text feat">nổi bật</label>
+														<label class="label-text sale">- [[${item.discount +
+															'%'}]]</label>
+													</div>
+													<button class="product-wish wish">
+														<th:block th:if="${user.email != null}">
+															<a th:if="${item.favorite} == false" title="Yêu thích"
+																th:href="@{/doFavorite(id=${item.productId})}">
+																<i class="fas fa-heart"></i>
+															</a>
+															<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+																th:href="@{/doUnFavorite(id=${item.productId})}">
+																<i class="fas fa-heart" style="color: #dc3545;"></i>
+															</a>
+														</th:block>
+														<th:block th:if="${user.email == null}">
+															<a title="Hãy đăng nhập" th:href="@{/login}">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+													</button>
+													<a class="product-image"
+														th:href="@{/productDetail(id=${item.productId})}">
+														<img th:src="@{'/loadImage?imageName='+${item.productImage}}"
+															alt="product" />
+													</a>
+													<div class="action-bar">
+														<th:block th:if="${user.email != null}">
+															<a th:if="${item.favorite} == false" title="Yêu thích"
+																th:href="@{/doFavorite(id=${item.productId})}"
+																class="action-btn heart-btn">
+																<i class="fas fa-heart"></i>
+															</a>
+															<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+																th:href="@{/doUnFavorite(id=${item.productId})}"
+																class="action-btn heart-btn active">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+														<th:block th:if="${user.email == null}">
+															<a title="Hãy đăng nhập" th:href="@{/login}"
+																class="action-btn heart-btn">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+														<a title="Video về sản phẩm"
+															href="https://youtu.be/bp7JBr8D_q4?si=mhZUqMi1d1XRov7I"
+															class="action-btn play-btn venobox" data-autoplay="true"
+															data-vbtype="video">
+															<i class="fas fa-play"></i>
+														</a>
+														<a title="Chi tiết sản phẩm"
+															th:href="@{/productDetail(id=${item.productId})}"
+															class="action-btn view-btn">
+															<i class="fas fa-eye"></i>
+														</a>
+													</div>
+												</div>
+												<div class="product-content">
+													<div class="product-rating">
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star-half-alt"></i>
+													</div>
+													<h6 class="product-name">
+														<a
+															th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
+													</h6>
+													<div class="product-price">
+														<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0,
+															'DEFAULT')}+'
+															đ']]</del>
+														<span>[[${#numbers.formatDecimal(item.price - (item.price *
+															item.discount/100),
+															1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]</span>
+													</div>
+													<a class="add-cart-btn"
+														th:href="@{/addToCart(productId=${item.productId})}">
+														<i class="fas fa-shopping-basket"></i>
+														<span>Thêm Giỏ Hàng</span>
+													</a>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col">
-					<ul class="new-slider slider-arrow">
-						<li th:each="item : ${bestSaleProduct20}">
-							<div class="product-card">
-								<div class="product-media">
-									<div class="product-label">
-										<label class="label-text feat">nổi bật</label>
-										<label class="label-text sale">- [[${item.discount + '%'}]]</label>
-									</div>
-									<button class="product-wish wish">
-										<i class="fas fa-heart"></i>
-									</button>
-									<a class="product-image" th:href="@{/productDetail(id=${item.productId})}">
-										<img th:src="@{'/loadImage?imageName='+${item.productImage}}" alt="product" />
-									</a>
-									<div class="product-widget">
-
-										<a title="Product Video" href="#" class="venobox fas fa-play"
-											data-autoplay="true" data-vbtype="video">
-										</a>
-										<a title="Chi tiết sản phẩm" th:href="@{/productDetail(id=${item.productId})}"
-											class="fas fa-eye">
-										</a>
-									</div>
-								</div>
-								<div class="product-content">
-									<div class="product-rating">
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="icofont-star"></i>
-									</div>
-
-									<h6 class="product-name">
-										<a th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
-									</h6>
-									<h6 class="product-price">
-										<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')}+'
-											đ']]</del>
-										<span>[[${#numbers.formatDecimal(item.price - (item.price * item.discount/100),
-											1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]<small></small></span>
-									</h6>
-									<a class="product-add1" title="Thêm giỏ hàng"
-										th:href="@{/addToCart(productId=${item.productId})}">
-										<i class="fas fa-shopping-basket"></i><span>Thêm giỏ hàng</span>
-									</a>
-
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="row">
 				<div class="col-lg-12">
-					<div class="section-btn-25">
-						<a th:href="@{/products}" class="btn btn-outline"><i class="fas fa-eye"></i><span>xem
-								thêm</span></a>
+					<div class="view-more-btn">
+						<a th:href="@{/products}" class="btn btn-outline">
+							<span>Xem Thêm</span>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -548,71 +865,118 @@
 	<section class="section newitem-part">
 		<div class="container">
 			<div class="row">
-				<div class="col">
-					<div class="section-heading">
-						<h2>GỢI Ý CHO BẠN</h2>
+				<div class="col-lg-12">
+					<div class="product-details-frame">
+						<div class="section-heading">
+							<h2><i class="fas fa-lightbulb"></i> GỢI Ý CHO BẠN</h2>
+						</div>
+						<div class="brand-content">
+							<div class="row">
+								<div class="col">
+									<ul class="new-slider slider-arrow">
+										<li th:each="item : ${productList}">
+											<div class="product-card">
+												<div class="product-media">
+													<div class="product-label">
+														<label class="label-text new">mới</label>
+														<label class="label-text sale">- [[${item.discount +
+															'%'}]]</label>
+													</div>
+													<button class="product-wish wish">
+														<th:block th:if="${user.email != null}">
+															<a th:if="${item.favorite} == false" title="Yêu thích"
+																th:href="@{/doFavorite(id=${item.productId})}">
+																<i class="fas fa-heart"></i>
+															</a>
+															<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+																th:href="@{/doUnFavorite(id=${item.productId})}">
+																<i class="fas fa-heart" style="color: #dc3545;"></i>
+															</a>
+														</th:block>
+														<th:block th:if="${user.email == null}">
+															<a title="Hãy đăng nhập" th:href="@{/login}">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+													</button>
+													<a class="product-image"
+														th:href="@{/productDetail(id=${item.productId})}">
+														<img th:src="@{'/loadImage?imageName='+${item.productImage}}"
+															alt="product" />
+													</a>
+													<div class="action-bar">
+														<th:block th:if="${user.email != null}">
+															<a th:if="${item.favorite} == false" title="Yêu thích"
+																th:href="@{/doFavorite(id=${item.productId})}"
+																class="action-btn heart-btn">
+																<i class="fas fa-heart"></i>
+															</a>
+															<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+																th:href="@{/doUnFavorite(id=${item.productId})}"
+																class="action-btn heart-btn active">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+														<th:block th:if="${user.email == null}">
+															<a title="Hãy đăng nhập" th:href="@{/login}"
+																class="action-btn heart-btn">
+																<i class="fas fa-heart"></i>
+															</a>
+														</th:block>
+														<a title="Video về sản phẩm"
+															href="https://youtu.be/bp7JBr8D_q4?si=mhZUqMi1d1XRov7I"
+															class="action-btn play-btn venobox" data-autoplay="true"
+															data-vbtype="video">
+															<i class="fas fa-play"></i>
+														</a>
+														<a title="Chi tiết sản phẩm"
+															th:href="@{/productDetail(id=${item.productId})}"
+															class="action-btn view-btn">
+															<i class="fas fa-eye"></i>
+														</a>
+													</div>
+												</div>
+												<div class="product-content">
+													<div class="product-rating">
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star"></i>
+														<i class="fas fa-star-half-alt"></i>
+													</div>
+													<h6 class="product-name">
+														<a
+															th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
+													</h6>
+													<div class="product-price">
+														<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0,
+															'DEFAULT')}+'
+															đ']]</del>
+														<span>[[${#numbers.formatDecimal(item.price - (item.price *
+															item.discount/100),
+															1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]</span>
+													</div>
+													<a class="add-cart-btn"
+														th:href="@{/addToCart(productId=${item.productId})}">
+														<i class="fas fa-shopping-basket"></i>
+														<span>Thêm Giỏ Hàng</span>
+													</a>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col">
-					<ul class="new-slider slider-arrow">
-						<li th:each="item : ${productList}">
-							<div class="product-card">
-								<div class="product-media">
-									<div class="product-label">
-										<label class="label-text new">mới</label>
-										<label class="label-text sale">- [[${item.discount + '%'}]]</label>
-									</div>
-									<button class="product-wish wish">
-										<i class="fas fa-heart"></i>
-									</button>
-									<a class="product-image" th:href="@{/productDetail(id=${item.productId})}">
-										<img th:src="@{'/loadImage?imageName='+${item.productImage}}" alt="product" />
-									</a>
-									<div class="product-widget">
-
-										<a title="Product Video" href="#" class="venobox fas fa-play"
-											data-autoplay="true" data-vbtype="video">
-										</a>
-										<a title="Chi tiết sản phẩm" th:href="@{/productDetail(id=${item.productId})}"
-											class="fas fa-eye">
-										</a>
-									</div>
-								</div>
-								<div class="product-content">
-									<div class="product-rating">
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="active icofont-star"></i>
-										<i class="icofont-star"></i>
-									</div>
-									<h6 class="product-name">
-										<a th:href="@{/productDetail(id=${item.productId})}">[[${item.productName}]]</a>
-									</h6>
-									<h6 class="product-price">
-										<del>[[${#numbers.formatDecimal(item.price, 1, 'DEFAULT', 0, 'DEFAULT')}+'
-											đ']]</del>
-										<span>[[${#numbers.formatDecimal(item.price - (item.price * item.discount/100),
-											1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]<small></small></span>
-									</h6>
-									<a class="product-add1" title="Thêm giỏ hàng"
-										th:href="@{/addToCart(productId=${item.productId})}">
-										<i class="fas fa-shopping-basket"></i><span>Thêm giỏ hàng</span>
-									</a>
-
-								</div>
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col">
-					<div class="section-btn-25">
-						<a th:href="@{/products}" class="btn btn-outline"><i class="fas fa-eye"></i><span>xem
-								thêm</span></a>
+					<div class="view-more-btn">
+						<a th:href="@{/products}" class="btn btn-outline">
+							<span>Xem Thêm</span>
+						</a>
 					</div>
 				</div>
 			</div>

@@ -35,11 +35,12 @@
 				Header End
 		*************************************-->
 
-  <section class="inner-section single-banner" style="background: url(images/single-banner.jpg) no-repeat center">
+  <section class="inner-section single-banner"
+    style="background: url(images/single-banner.jpg) no-repeat center; height: 200px; padding: 20px 0; display: flex; align-items: center;">
     <div class="container">
       <h2>Thông tin đơn hàng</h2>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+        <!-- <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li> -->
       </ol>
     </div>
   </section>
@@ -48,9 +49,9 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="alert-info">
-            <p>
+            <!-- <p>
               Phản hồi khách hàng? <a href="javascript:void(0);">Đăng nhập</a>
-            </p>
+            </p> -->
           </div>
         </div>
         <div class="col-lg-12">
@@ -87,7 +88,8 @@
                         <img th:src="@{'/loadImage?imageName='+${item.product.productImage}}" alt="product" />
                       </td>
                       <td class="table-name">
-                        <h6>[[${item.product.productName}]]</h6>
+                        <h6 class="product-title" th:title="${item.product.productName}">[[${item.product.productName}]]
+                        </h6>
                       </td>
                       <td class="table-price">
                         <h6>[[${#numbers.formatDecimal(item.product.price - (item.product.price *
