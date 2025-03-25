@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import vn.fs.commom.CommomDataService;
+import vn.fs.entities.Category;
 import vn.fs.entities.Favorite;
 import vn.fs.entities.Product;
 import vn.fs.entities.User;
+import vn.fs.repository.CategoryRepository;
 import vn.fs.repository.FavoriteRepository;
 import vn.fs.repository.ProductRepository;
 
@@ -40,6 +42,9 @@ public class ShopController extends CommomController {
 
 	@Autowired
 	CommomDataService commomDataService;
+
+	@Autowired
+	CategoryRepository categoryRepository;
 
 	@GetMapping(value = "/products")
 	public String shop(Model model, Pageable pageable, @RequestParam("page") Optional<Integer> page,
@@ -133,6 +138,12 @@ public class ShopController extends CommomController {
 	@GetMapping(value = "/productByCategory")
 	public String listProductbyid(Model model, @RequestParam("id") Long id, User user) {
 		List<Product> products = productRepository.listProductByCategory(id);
+
+		// Lấy thông tin thể loại
+		Category category = categoryRepository.findById(id).orElse(null);
+		if (category != null) {
+			model.addAttribute("categoryName", category.getCategoryName());
+		}
 
 		List<Product> listProductNew = new ArrayList<>();
 

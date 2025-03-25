@@ -35,7 +35,8 @@
 				Header End
 		*************************************-->
 
-	<section class="single-banner inner-section" style="background: url(images/single-banner.jpg) no-repeat center">
+	<section class="inner-section single-banner"
+		style="background: url(images/single-banner.jpg) no-repeat center; height: 200px; padding: 20px 0; display: flex; align-items: center;">
 		<div class="container">
 			<h2>Chi tiết sản phẩm</h2>
 			<ol class="breadcrumb">
@@ -107,9 +108,24 @@
 							</a>
 						</div>
 						<div class="details-action-group">
-							<a class="details-wish" href="javascript:void(0);" title="Yêu thích">
-								<i class="icofont-heart"></i>
-								<span>Thêm yêu thích</span></a>
+							<th:block th:if="${user.email != null}">
+								<a th:if="${product.favorite} == false" class="details-wish" title="Yêu thích"
+									th:href="@{/doFavorite(id=${product.productId})}">
+									<i class="icofont-heart"></i>
+									<span>Thêm yêu thích</span>
+								</a>
+								<a th:if="${product.favorite} == true" class="details-wish" title="Xóa Yêu thích"
+									th:href="@{/doUnFavorite(id=${product.productId})}">
+									<i class="icofont-heart" style="color: #dc3545;"></i>
+									<span>Xóa yêu thích</span>
+								</a>
+							</th:block>
+							<th:block th:if="${user.email == null}">
+								<a class="details-wish" title="Hãy đăng nhập" th:href="@{/login}">
+									<i class="icofont-heart"></i>
+									<span>Thêm yêu thích</span>
+								</a>
+							</th:block>
 						</div>
 					</div>
 				</div>
@@ -153,6 +169,23 @@
 												<div class="product-label">
 													<span class="discount-label">-[[${item.discount + '%'}]]</span>
 												</div>
+												<button class="product-wish wish">
+													<th:block th:if="${user.email != null}">
+														<a th:if="${item.favorite} == false" title="Yêu thích"
+															th:href="@{/doFavorite(id=${item.productId})}">
+															<i class="fas fa-heart"></i>
+														</a>
+														<a th:if="${item.favorite} == true" title="Xóa Yêu thích"
+															th:href="@{/doUnFavorite(id=${item.productId})}">
+															<i class="fas fa-heart" style="color: #dc3545;"></i>
+														</a>
+													</th:block>
+													<th:block th:if="${user.email == null}">
+														<a title="Hãy đăng nhập" th:href="@{/login}">
+															<i class="fas fa-heart"></i>
+														</a>
+													</th:block>
+												</button>
 												<a class="product-image"
 													th:href="@{/productDetail(id=${item.productId})}">
 													<img th:src="@{'/loadImage?imageName='+${item.productImage}}"
@@ -464,6 +497,31 @@
 			padding: 2px 6px;
 			border-radius: 3px;
 			font-size: 12px;
+		}
+
+		/* Màu trái tim yêu thích */
+		.product-wish {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			z-index: 2;
+			background: none;
+			border: none;
+			padding: 0;
+			cursor: pointer;
+		}
+
+		.product-wish i.fas.fa-heart {
+			color: #999999 !important;
+			transition: color 0.3s ease;
+		}
+
+		.product-wish a:hover i.fas.fa-heart {
+			color: #dc3545 !important;
+		}
+
+		.product-wish a i.fas.fa-heart[style*="color: #dc3545"] {
+			color: #dc3545 !important;
 		}
 
 		/* Nút hành động */

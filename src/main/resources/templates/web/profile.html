@@ -35,11 +35,12 @@
 				Header End
 		*************************************-->
 
-  <section class="inner-section single-banner" style="background: url(images/single-banner.jpg) no-repeat center">
+  <section class="inner-section single-banner"
+    style="background: url(images/single-banner.jpg) no-repeat center; height: 200px; padding: 20px 0; display: flex; align-items: center;">
     <div class="container">
       <h2>thông tin tài khoản</h2>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+        <!-- <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li> -->
 
       </ol>
     </div>
@@ -64,13 +65,15 @@
                 <div class="col-md-6 col-lg-4">
                   <div class="form-group">
                     <label class="form-label">Họ và tên</label>
-                    <input class="form-control" type="text" th:value="${user.name}" />
+                    <input class="form-control" type="text" th:value="${user.name}" readonly
+                      style="background-color: #e9ecef; cursor: not-allowed;" />
                   </div>
                 </div>
                 <div class="col-md-6 col-lg-4">
                   <div class="form-group">
-                    <label class="form-label">Địa chỉ Email</label><input class="form-control" type="email"
-                      th:value="${user.email}" />
+                    <label class="form-label">Địa chỉ Email</label>
+                    <input class="form-control" type="email" th:value="${user.email}" readonly
+                      style="background-color: #e9ecef; cursor: not-allowed;" />
                   </div>
                 </div>
               </div>
