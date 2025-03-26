@@ -6888,10 +6888,12 @@ tbody tr td:last-child {
 }
 
 .single-banner h2 {
-  font-size: 38px;
+  font-size: 48px;
   margin-bottom: 15px;
   color: var(--white);
   text-transform: uppercase;
+  font-family: 'Source Serif Pro', serif;
+  font-weight: 700;
 }
 
 @media (max-width: 767px) {
