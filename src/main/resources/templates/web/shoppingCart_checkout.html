@@ -35,12 +35,11 @@
 				Header End
 		*************************************-->
 
-  <section class="inner-section single-banner"
-    style="background: url(images/single-banner.jpg) no-repeat center; height: 200px; padding: 20px 0; display: flex; align-items: center;">
+  <section class="inner-section single-banner" style="background: url(images/single-banner.jpg) no-repeat center">
     <div class="container">
       <h2>Thông tin đơn hàng</h2>
       <ol class="breadcrumb">
-        <!-- <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li> -->
+        <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
       </ol>
     </div>
   </section>
@@ -49,9 +48,9 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="alert-info">
-            <!-- <p>
+            <p>
               Phản hồi khách hàng? <a href="javascript:void(0);">Đăng nhập</a>
-            </p> -->
+            </p>
           </div>
         </div>
         <div class="col-lg-12">
@@ -75,7 +74,7 @@
                       <th scope="col">Đơn giá</th>
                       <th scope="col">Thể loại</th>
                       <th scope="col">Số lượng</th>
-                      <th scope="col">Hành động</th>
+                      <th scope="col">action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -88,8 +87,7 @@
                         <img th:src="@{'/loadImage?imageName='+${item.product.productImage}}" alt="product" />
                       </td>
                       <td class="table-name">
-                        <h6 class="product-title" th:title="${item.product.productName}">[[${item.product.productName}]]
-                        </h6>
+                        <h6>[[${item.product.productName}]]</h6>
                       </td>
                       <td class="table-price">
                         <h6>[[${#numbers.formatDecimal(item.product.price - (item.product.price *
@@ -129,6 +127,7 @@
                     </li>
                   </ul>
                 </div>
+                <input type="hidden" id="totalPrice" th:value="${totalPrice}" />
               </th:block>
             </div>
           </div>
@@ -137,7 +136,7 @@
         <div class="col-lg-12" th:if="${totalCartItems!=0}">
           <div class="account-card mb-0">
             <div class="account-title">
-              <h4>Thông tin nhận hàng</h4>
+              <h4>Thông tin nhận hàng </h4>
             </div>
             <div class="account-content">
               <div class="row">
@@ -178,9 +177,15 @@
                       <label style="color: #dc3545"><input type="radio" value="paypal" name="checkOut">
                         <strong><em>Thanh Toán Với Paypal</em></strong></label>
                     </div>
+                    <div class="radio">
+                      <label style="color: #dc3545">
+                        <input type="radio" value="vnpay" name="checkOut">
+                        <strong><em>Thanh Toán Qua VNPay</em></strong>
+                      </label>
+                    </div>
                   </div>
                   <div class="checkout-proced">
-                    <button type="submit" class="btn btn-inline">Đặt hàng</button>
+                    <button type="submit" onclick="handleCheckout()" class="btn btn-inline">Đặt hàng</button>
                   </div>
                 </form>
               </div>
@@ -192,7 +197,7 @@
     </div>
   </section>
 
-  <!-- <section class="news-part" style="background: url(images/newsletter.jpg) no-repeat center">
+  <section class="news-part" style="background: url(images/newsletter.jpg) no-repeat center">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-md-5 col-lg-6 col-xl-7">
@@ -210,7 +215,7 @@
         </div>
       </div>
     </div>
-  </section> -->
+  </section>
   <section class="intro-part">
     <div class="container">
       <div class="row intro-content">
@@ -262,6 +267,68 @@
     }
   </script>
 
+  <script>
+    function handleCheckout() {
+      const selectedPayment = document.querySelector('input[name="checkOut"]:checked').value;
+      const timestamp = new Date().getTime();
+      const orderId = Number(timestamp);
+
+      const totalPriceElement = document.getElementById("totalPrice");
+
+      if (!totalPriceElement) {
+        alert("Không tìm thấy tổng giá trị đơn hàng!");
+        return;
+      }
+
+      let totalPrice = parseFloat(totalPriceElement.value);
+
+      if (isNaN(totalPrice)) {
+        alert("Tổng giá trị không hợp lệ!");
+        return;
+      }
+
+      totalPrice = Math.round(totalPrice); // Đảm bảo totalPrice là số nguyên
+
+      if (selectedPayment === "vnpay") {
+        console.log("Calling VNPay with orderId: " + orderId + " and totalPrice: " + totalPrice);
+        fetch(`http://localhost:9090/vnpay/create-payment?orderId=${orderId}&totalPrice=${totalPrice}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then(response => {
+            console.log("Response status: ", response.status);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then(data => {
+            if (data.paymentUrl) {
+              console.log("Redirecting to VNPay: " + data.paymentUrl);
+              window.location.href = data.paymentUrl;
+            } else {
+              throw new Error("No payment URL returned from server");
+            }
+          })
+          .catch(error => {
+            alert("Lỗi khi tạo thanh toán VNPay: " + error.message);
+            console.error("Error details: ", error);
+          });
+      } else if (selectedPayment === "cod") {
+        // Handle COD (submit form as is)
+        document.querySelector('form').submit();
+      }
+      // else if 
+      // (selectedPayment === "paypal") {
+      //   alert("Chức năng thanh toán Paypal chưa được triển khai!");
+      // } 
+      else {
+        alert("Vui lòng chọn phương thức thanh toán!");
+      }
+    }
+  </script>
   <!-- Modal -->
   <div class="modal" id="configmationId">
     <div class="modal-dialog modal-dialog-centered">
@@ -285,18 +352,7 @@
       </div>
     </div>
   </div>
-
-
-  <!--************************************
-				Footer Start
-		*************************************-->
   <footer th:replace="~{/web/fragments/footer :: footer}"></footer>
-
-  <!--************************************
-				Footer End
-		*************************************-->
-
-
   <script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
   <script src="vendor/bootstrap/popper.min.js"></script>
   <script src="vendor/bootstrap/bootstrap.min.js"></script>

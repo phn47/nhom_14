@@ -36,6 +36,15 @@ public class UserDetailService implements UserDetailsService {
 
 	}
 
+	// Thêm phương thức để lấy userId dựa trên email
+	public Long getUserIdByUsername(String email) {
+		User user = userRepository.findByEmail(email);
+		if (user == null) {
+			throw new UsernameNotFoundException("Không tìm thấy người dùng với email: " + email);
+		}
+		return user.getUserId(); // Giả sử User có trường id kiểu Long
+	}
+
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
